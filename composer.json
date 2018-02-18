@@ -1,0 +1,11 @@
+{
+    "name": "vgroup/idealnapupa",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Athlan",
+            "email": "athlan@vgroup.pl"
+        }
+    ],
+    "require": {}
+}
