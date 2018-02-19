@@ -10,5 +10,6 @@
         </id>
         <field name="creationDate" column="creation_date" type="datetime" />
         <field name="paidDate" column="paid_date" type="datetime" nullable="true" />
+        <embedded name="orderData" class="LandingPayment\Domain\OrderData" use-column-prefix="false" />
     </entity>
 </doctrine-mapping>

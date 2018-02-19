@@ -9,4 +9,6 @@ interface OrderRepository {
      * @return Order|null
      */
     public function getById($orderId);
+
+    public function save(Order $order);
 }

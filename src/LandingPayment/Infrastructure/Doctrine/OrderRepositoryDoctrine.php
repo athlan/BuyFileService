@@ -20,4 +20,9 @@ class OrderRepositoryDoctrine implements OrderRepository {
     public function getById($orderId) {
         return $this->em->find(Order::class, $orderId);
     }
+
+    public function save(Order $order) {
+        $this->em->persist($order);
+        $this->em->flush();
+    }
 }

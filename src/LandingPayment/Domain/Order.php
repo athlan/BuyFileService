@@ -18,6 +18,11 @@ class Order {
     private $creationDate;
 
     /**
+     * @var OrderData
+     */
+    private $orderData;
+
+    /**
      * @var DateTimeImmutable|NULL
      */
     private $paidDate;
@@ -25,6 +30,7 @@ class Order {
     private function __construct(DateTimeImmutable $creationDate) {
         $this->orderId = Uuid::uuid4();
         $this->creationDate = $creationDate;
+        $this->orderData = new OrderData();
     }
 
     /**
@@ -33,6 +39,13 @@ class Order {
      */
     public static function createNewOrder(DateTimeImmutable $creationDate) {
         return new Order($creationDate);
+    }
+
+    /**
+     * @return OrderData
+     */
+    public function getOrderData() {
+        return $this->orderData;
     }
 
     /**
