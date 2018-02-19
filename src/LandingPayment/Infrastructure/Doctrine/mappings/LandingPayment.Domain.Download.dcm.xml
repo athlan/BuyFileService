@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+
+    <entity name="LandingPayment\Domain\Download" table="downloads">
+        <id name="order" association-key="true" />
+        <field name="downloadDate" column="download_date" type="datetime" />
+        <field name="ip" column="ip" type="string" />
+
+        <many-to-one target-entity="LandingPayment\Domain\Order" field="order">
+            <join-column name="order_id" referenced-column-name="id" />
+        </many-to-one>
+    </entity>
+</doctrine-mapping>

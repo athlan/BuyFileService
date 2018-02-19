@@ -45,8 +45,18 @@ $app->register(new DoctrineOrmServiceProvider(), array(
     ),
 ));
 
+$app['download.uc'] = function () use ($app) {
+    return new \LandingPayment\Usecase\DownloadContentUC(
+        $app['order.repository'],
+        $app['download.repository']
+    );
+};
+
 $app['order.repository'] = function () use ($app) {
     return new \LandingPayment\Infrastructure\Doctrine\OrderRepositoryDoctrine($app['orm.em']);
+};
+$app['download.repository'] = function () use ($app) {
+    return new \LandingPayment\Infrastructure\Doctrine\DownloadRepositoryDoctrine($app['orm.em']);
 };
 
 return $app;

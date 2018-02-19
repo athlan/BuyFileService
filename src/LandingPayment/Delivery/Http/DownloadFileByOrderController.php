@@ -2,27 +2,40 @@
 
 namespace LandingPayment\Delivery\Http;
 
-use LandingPayment\Domain\OrderRepository;
+use LandingPayment\Usecase\DownloadContentUC;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DownloadFileByOrderController {
 
     /**
-     * @var OrderRepository
+     * @var DownloadContentUC
      */
-    private $orderRepository;
+    private $downloadContentUC;
 
-    public function __construct(OrderRepository $orderRepository) {
-        $this->orderRepository = $orderRepository;
+    private $fileToStream;
+
+    public function __construct(DownloadContentUC $downloadContentUC, $fileToStream) {
+        $this->downloadContentUC = $downloadContentUC;
+        $this->fileToStream = $fileToStream;
     }
 
-    public function download($orderId) {
-        $order = $this->orderRepository->getById($orderId);
+    public function download(Request $request, $orderId) {
+        $result = $this->downloadContentUC->canDownloadContent($orderId);
 
-        if ($order == null) {
+        if ($result === false) {
             throw new NotFoundHttpException();
         }
 
-        return;
+        $ip = $request->getClientIp();
+        $this->downloadContentUC->doDownload($orderId, $ip);
+
+        $response = BinaryFileResponse::create($this->fileToStream);
+        $response->expire();
+        $response->mustRevalidate();
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+        return $response;
     }
 }

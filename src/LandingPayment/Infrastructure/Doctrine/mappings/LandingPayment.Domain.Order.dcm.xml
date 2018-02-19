@@ -8,6 +8,7 @@
         <id name="orderId" type="string" column="id">
             <generator strategy="NONE"/>
         </id>
-        <!--<field name="name" column="name" type="string" length="50" nullable="true" unique="true" />-->
+        <field name="creationDate" column="creation_date" type="datetime" />
+        <field name="paidDate" column="paid_date" type="datetime" nullable="true" />
     </entity>
 </doctrine-mapping>
