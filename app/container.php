@@ -1,17 +1,52 @@
 <?php
 
 use Silex\Application;
+use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
+use Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
 
 $app = new Application();
+
+require __DIR__ . '/config/params.php';
+
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
 $app->register(new TwigServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
+
 $app['twig'] = $app->extend('twig', function ($twig, $app) {
     return $twig;
 });
+
+$app->register(new DoctrineServiceProvider(), array(
+    'db.options' => array(
+        'driver'   => 'pdo_mysql',
+        'dbname'   => $app['config.db.name'],
+        'host'     => $app['config.db.host'],
+        'port'     => $app['config.db.port'],
+        'user'     => $app['config.db.user'],
+        'password' => $app['config.db.password'],
+        'charset'  => 'utf8'
+    ),
+));
+
+$app->register(new DoctrineOrmServiceProvider(), array(
+    'orm.proxies_dir' =>  __DIR__ . '/../../var/cache/doctrine-proxy',
+    'orm.em.options' => array(
+        'mappings' => array(
+            array(
+                'type' => 'xml',
+                'namespace' => 'LandingPayment\Domain',
+                'path' => __DIR__ . '/../src/LandingPayment/Infrastructure/Doctrine/mappings',
+            ),
+        ),
+    ),
+));
+
+$app['order.repository'] = function () use ($app) {
+    return new \LandingPayment\Infrastructure\Doctrine\OrderRepositoryDoctrine($app['orm.em']);
+};
 
 return $app;

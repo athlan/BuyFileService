@@ -18,7 +18,8 @@ Debug::enable();
 
 $app = require __DIR__ . '/../app/container.php';
 
-require __DIR__ . '/../app/config/dev.php';
+require __DIR__ . '/../app/container_dev.php';
 require __DIR__ . '/../app/controllers.php';
+require __DIR__ . '/../app/router.php';
 
 $app->run();
