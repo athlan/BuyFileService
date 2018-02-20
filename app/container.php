@@ -53,6 +53,13 @@ $app['download.uc'] = function () use ($app) {
     );
 };
 
+$app['payment.confirmation.uc'] = function () use ($app) {
+    return new \LandingPayment\Usecase\PaymentConfirmationUC(
+        $app['order.repository'],
+        $app['paymentGatewayEvent.repository']
+    );
+};
+
 $app['order.repository'] = function () use ($app) {
     return new \LandingPayment\Infrastructure\Doctrine\OrderRepositoryDoctrine($app['orm.em']);
 };
@@ -61,6 +68,9 @@ $app['download.repository'] = function () use ($app) {
 };
 $app['product.repository'] = function () use ($app) {
     return new \LandingPayment\Infrastructure\Config\ProductRepositoryConfig($app['product.repository.data']);
+};
+$app['paymentGatewayEvent.repository'] = function () use ($app) {
+    return new \LandingPayment\Infrastructure\Doctrine\PaymentGatewayEventRepositoryDoctrine($app['orm.em']);
 };
 
 $app['order.payment.httpresponse.factory'] = function () use ($app) {

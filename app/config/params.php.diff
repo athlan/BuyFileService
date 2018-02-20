@@ -1,5 +1,7 @@
 <?php
 
+$app['app.url'] = 'http://some.service';
+
 $app['config.db.host'] = 'localhost';
 $app['config.db.port'] = '3306';
 $app['config.db.name'] = 'idealnapupa';

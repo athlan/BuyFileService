@@ -2,6 +2,7 @@
 
 namespace LandingPayment\Delivery\PaymentGateway\PayU;
 
+use LandingPayment\Delivery\PaymentGateway\ReturnUrlFactory;
 use LandingPayment\Domain\ProductRepository;
 use OpenPayU_Configuration;
 use OpenPayU_Order;
@@ -33,7 +34,7 @@ class OrderPaymentResponsePayUFactory implements OrderPaymentResponseFactory
         $product = $this->productRepository->getById($orderItem->getProductId());
 
         //customer will be redirected to this page after successfull payment
-        $params['continueUrl'] = 'http://localhost/';
+        $params['continueUrl'] = ReturnUrlFactory::create($order, $product);
 
         $params['notifyUrl'] = 'http://localhost/';
 
@@ -49,7 +50,7 @@ class OrderPaymentResponsePayUFactory implements OrderPaymentResponseFactory
         $params['products'][0]['quantity'] = $orderItem->getQuantity();
 
         $params['buyer']['email'] = $order->getOrderData()->getEmail();
-
+var_dump($params);exit;
         $response = OpenPayU_Order::create($params);
         $redirectUrl = $response->getResponse()->redirectUri;
 

@@ -7,5 +7,5 @@ interface DownloadRepository {
     /**
      * @param Download $download
      */
-    public function save($download);
+    public function save(Download $download);
 }
