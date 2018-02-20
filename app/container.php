@@ -48,7 +48,8 @@ $app->register(new DoctrineOrmServiceProvider(), array(
 $app['download.uc'] = function () use ($app) {
     return new \LandingPayment\Usecase\DownloadContentUC(
         $app['order.repository'],
-        $app['download.repository']
+        $app['download.repository'],
+        $app['product.repository']
     );
 };
 
@@ -57,6 +58,23 @@ $app['order.repository'] = function () use ($app) {
 };
 $app['download.repository'] = function () use ($app) {
     return new \LandingPayment\Infrastructure\Doctrine\DownloadRepositoryDoctrine($app['orm.em']);
+};
+$app['product.repository'] = function () use ($app) {
+    return new \LandingPayment\Infrastructure\Config\ProductRepositoryConfig($app['product.repository.data']);
+};
+
+$app['order.payment.httpresponse.factory'] = function () use ($app) {
+    return new \LandingPayment\Delivery\PaymentGateway\PayU\OrderPaymentResponsePayUFactory(
+        $app['payment.gateway.payu.configuration'],
+        $app['product.repository']
+    );
+};
+
+// payu
+$app['payment.gateway.payu.configuration'] = function () use ($app) {
+    $config = new \LandingPayment\Delivery\PaymentGateway\PayU\Configuration($app);
+    $config->initialize();
+    return $config;
 };
 
 return $app;

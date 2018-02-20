@@ -15,11 +15,8 @@ class DownloadFileByOrderController {
      */
     private $downloadContentUC;
 
-    private $fileToStream;
-
-    public function __construct(DownloadContentUC $downloadContentUC, $fileToStream) {
+    public function __construct(DownloadContentUC $downloadContentUC) {
         $this->downloadContentUC = $downloadContentUC;
-        $this->fileToStream = $fileToStream;
     }
 
     public function download(Request $request, $orderId) {
@@ -30,9 +27,11 @@ class DownloadFileByOrderController {
         }
 
         $ip = $request->getClientIp();
-        $this->downloadContentUC->doDownload($orderId, $ip);
+        $product = $this->downloadContentUC->doDownload($orderId, $ip);
+        $productMetadata = $product->getMetadata();
+        $fileToStream = $productMetadata['filestream.path'];
 
-        $response = BinaryFileResponse::create($this->fileToStream);
+        $response = BinaryFileResponse::create($fileToStream);
         $response->expire();
         $response->mustRevalidate();
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);

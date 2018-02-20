@@ -5,3 +5,5 @@
 
 /var/logs/*
 !/var/logs/.gitkeep
+
+/app/config/params.php

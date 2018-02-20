@@ -8,6 +8,11 @@ class OrderData
     /**
      * @var string
      */
+    private $creationIp;
+
+    /**
+     * @var string
+     */
     private $email;
 
     /**
@@ -19,6 +24,18 @@ class OrderData
      * @var OrderInvoiceData
      */
     private $invoiceData;
+
+    public function getCreationIp() {
+        return $this->creationIp;
+    }
+
+    public function setCreationIp($creationIp) {
+        $this->creationIp = $creationIp;
+    }
+
+    public function getEmail() {
+        return $this->email;
+    }
 
     public function setEmail($email) {
         $this->email = $email;

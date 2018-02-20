@@ -27,6 +27,11 @@ class Order {
      */
     private $paidDate;
 
+    /**
+     * @var OrderItem
+     */
+    private $orderItem;
+
     private function __construct(DateTimeImmutable $creationDate) {
         $this->orderId = Uuid::uuid4();
         $this->creationDate = $creationDate;
@@ -39,6 +44,20 @@ class Order {
      */
     public static function createNewOrder(DateTimeImmutable $creationDate) {
         return new Order($creationDate);
+    }
+
+    /**
+     * @param OrderItem $item
+     */
+    public function addItem(OrderItem $item) {
+        $this->orderItem = $item;
+    }
+
+    /**
+     * @return OrderItem
+     */
+    public function getItem() {
+        return $this->orderItem;
     }
 
     /**

@@ -6,6 +6,8 @@ use InvalidArgumentException;
 use LandingPayment\Domain\Download;
 use LandingPayment\Domain\DownloadRepository;
 use LandingPayment\Domain\OrderRepository;
+use LandingPayment\Domain\Product;
+use LandingPayment\Domain\ProductRepository;
 
 class DownloadContentUC
 {
@@ -19,10 +21,17 @@ class DownloadContentUC
      */
     private $downloadRepository;
 
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
     public function __construct(OrderRepository $orderRepository,
-                                DownloadRepository $downloadRepository) {
+                                DownloadRepository $downloadRepository,
+                                ProductRepository $productRepository) {
         $this->orderRepository = $orderRepository;
         $this->downloadRepository = $downloadRepository;
+        $this->productRepository = $productRepository;
     }
 
     public function canDownloadContent($orderId) {
@@ -35,6 +44,11 @@ class DownloadContentUC
         return $order->isPaid();
     }
 
+    /**
+     * @param $orderId
+     * @param $ip
+     * @return Product
+     */
     public function doDownload($orderId, $ip) {
         $order = $this->orderRepository->getById($orderId);
 
@@ -46,5 +60,10 @@ class DownloadContentUC
 
         $download = new Download($order, $now, $ip);
         $this->downloadRepository->save($download);
+
+        $productId = $order->getItem()->getProductId();
+        $product = $this->productRepository->getById($productId);
+
+        return $product;
     }
 }

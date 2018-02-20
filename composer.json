@@ -16,6 +16,7 @@
         "symfony/debug": "~2.8|^3.0",
         "symfony/monolog-bridge": "~2.8|^3.0",
         "dflydev/doctrine-orm-service-provider": "^2.0",
-        "ramsey/uuid": "^3.7"
+        "ramsey/uuid": "^3.7",
+        "openpayu/openpayu": "^2.2"
     }
 }
