@@ -8,18 +8,27 @@ use OpenPayU_Configuration;
 use OpenPayU_Order;
 use LandingPayment\Delivery\PaymentGateway\OrderPaymentResponseFactory;
 use LandingPayment\Domain\Order;
+use Silex\Application;
+use Silex\Application\UrlGeneratorTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrderPaymentResponsePayUFactory implements OrderPaymentResponseFactory
 {
     /**
+     * @var Application
+     */
+    private $app;
+
+    /**
      * @var ProductRepository
      */
     private $productRepository;
 
-    public function __construct(Configuration $configuration,
+    public function __construct($app,
+                                Configuration $configuration,
                                 ProductRepository $productRepository) {
+        $this->app = $app;
         $this->productRepository = $productRepository;
     }
 
@@ -36,7 +45,7 @@ class OrderPaymentResponsePayUFactory implements OrderPaymentResponseFactory
         //customer will be redirected to this page after successfull payment
         $params['continueUrl'] = ReturnUrlFactory::create($order, $product);
 
-        $params['notifyUrl'] = 'http://localhost/';
+        $params['notifyUrl'] = $this->app['app.url'] . '/payment/gateway/payu/pingback';
 
         $params['customerIp'] = $order->getOrderData()->getCreationIp();
         $params['merchantPosId'] = OpenPayU_Configuration::getMerchantPosId();
@@ -50,7 +59,7 @@ class OrderPaymentResponsePayUFactory implements OrderPaymentResponseFactory
         $params['products'][0]['quantity'] = $orderItem->getQuantity();
 
         $params['buyer']['email'] = $order->getOrderData()->getEmail();
-var_dump($params);exit;
+
         $response = OpenPayU_Order::create($params);
         $redirectUrl = $response->getResponse()->redirectUri;
 

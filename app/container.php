@@ -75,6 +75,7 @@ $app['paymentGatewayEvent.repository'] = function () use ($app) {
 
 $app['order.payment.httpresponse.factory'] = function () use ($app) {
     return new \LandingPayment\Delivery\PaymentGateway\PayU\OrderPaymentResponsePayUFactory(
+        $app,
         $app['payment.gateway.payu.configuration'],
         $app['product.repository']
     );
