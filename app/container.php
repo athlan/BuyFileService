@@ -33,7 +33,7 @@ $app->register(new DoctrineServiceProvider(), array(
 ));
 
 $app->register(new DoctrineOrmServiceProvider(), array(
-    'orm.proxies_dir' =>  __DIR__ . '/../../var/cache/doctrine-proxy',
+    'orm.proxies_dir' =>  __DIR__ . '/../var/cache/doctrine-proxy',
     'orm.em.options' => array(
         'mappings' => array(
             array(
