@@ -19,6 +19,7 @@ $app['order.downloadFile.controller'] = function() use ($app) {
 
 $app['payment.gateway.payu.controller'] = function() use ($app) {
     return new \LandingPayment\Delivery\PaymentGateway\PayU\Http\PingbackController(
+        $app['payment.gateway.payu.configuration'],
         $app['payment.confirmation.uc']
     );
 };

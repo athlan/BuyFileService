@@ -25,7 +25,13 @@ class PaymentConfirmationUC
         $this->paymentGatewayEventRepository = $paymentGatewayEventRepository;
     }
 
-    public function markAsPaid($orderId) {
+    /**
+     * @param string $orderId
+     * @param float $amount
+     * @param string $currency
+     * @return bool
+     */
+    public function markAsPaid($orderId, $amount, $currency) {
         $now = new \DateTimeImmutable();
 
         $order = $this->orderRepository->getById($orderId);
@@ -34,9 +40,20 @@ class PaymentConfirmationUC
             throw new InvalidArgumentException();
         }
 
+        $orderItem = $order->getItem();
+
+        if ($currency !== $orderItem->getCurrency()) {
+            return false;
+        }
+        if ($amount < $orderItem->getPrice()) {
+            return false;
+        }
+
         $order->markAsPaid($now);
 
         $this->orderRepository->save($order);
+
+        return true;
     }
 
     /**

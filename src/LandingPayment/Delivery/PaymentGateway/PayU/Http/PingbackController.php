@@ -2,6 +2,7 @@
 
 namespace LandingPayment\Delivery\PaymentGateway\PayU\Http;
 
+use LandingPayment\Delivery\PaymentGateway\PayU\Configuration;
 use OpenPayU_Order;
 use LandingPayment\Usecase\PaymentConfirmationUC;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,8 @@ class PingbackController {
      */
     private $confirmationUC;
 
-    public function __construct(PaymentConfirmationUC $confirmationUC) {
+    public function __construct(Configuration $configuration,
+                                PaymentConfirmationUC $confirmationUC) {
         $this->confirmationUC = $confirmationUC;
     }
 
@@ -33,8 +35,12 @@ class PingbackController {
         $status = $response->getResponse()->order->status;
 
         if($status == 'COMPLETED') {
-            $orderId = 123;
-            $this->confirmationUC->markAsPaid($orderId);
+            $responseOrder = $response->getResponse()->order;
+            $orderId = $responseOrder->extOrderId;
+            $amount = $responseOrder->totalAmount / 100;
+            $currency = $responseOrder->currencyCode;
+
+            $this->confirmationUC->markAsPaid($orderId, $amount, $currency);
         }
 
         return Response::create(); // ok
