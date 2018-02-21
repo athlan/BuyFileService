@@ -2,6 +2,7 @@
 
 namespace LandingPayment\Delivery\PaymentGateway\PayU\Http;
 
+use Exception;
 use LandingPayment\Delivery\PaymentGateway\PayU\Configuration;
 use OpenPayU_Order;
 use LandingPayment\Usecase\PaymentConfirmationUC;
@@ -22,36 +23,48 @@ class PingbackController {
     }
 
     public function pingback(Request $request) {
-        $this->logPingback($request);
+        $logData = [];
 
-        if (!$request->isMethod(Request::METHOD_POST)) {
-            throw new BadRequestHttpException();
+        try {
+            if (!$request->isMethod(Request::METHOD_POST)) {
+                throw new BadRequestHttpException();
+            }
+
+            $body = $request->getContent();
+
+            $response = OpenPayU_Order::consumeNotification($body);
+
+            $status = $response->getResponse()->order->status;
+
+            if ($status == 'COMPLETED') {
+                $responseOrder = $response->getResponse()->order;
+                $orderId = $responseOrder->extOrderId;
+                $amount = $responseOrder->totalAmount / 100;
+                $currency = $responseOrder->currencyCode;
+
+                $paidResult = $this->confirmationUC->markAsPaid($orderId, $amount, $currency);
+
+                $logData['paidResult'] = $paidResult;
+            }
+
+            $this->logPingback($request, $logData);
+            return Response::create(); // ok
         }
+        catch (Exception $e) {
+            $logData['exception'] = $e;
 
-        $body = $request->getContent();
-
-        $response = OpenPayU_Order::consumeNotification($body);
-
-        $status = $response->getResponse()->order->status;
-
-        if($status == 'COMPLETED') {
-            $responseOrder = $response->getResponse()->order;
-            $orderId = $responseOrder->extOrderId;
-            $amount = $responseOrder->totalAmount / 100;
-            $currency = $responseOrder->currencyCode;
-
-            $this->confirmationUC->markAsPaid($orderId, $amount, $currency);
+            $this->logPingback($request, $logData);
+            return Response::create("", Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        return Response::create(); // ok
     }
 
-    private function logPingback(Request $request) {
+    private function logPingback(Request $request, $logData) {
         $gatewayId = "payu";
         $eventName = "pingback";
         $data = [
             'method' => $request->getMethod(),
             'body' => $request->getContent(),
+            'data' => $logData,
         ];
 
         $this->confirmationUC->createEvent($gatewayId, $eventName, $data);
