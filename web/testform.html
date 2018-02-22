@@ -1,0 +1,30 @@
+<form method="post" action="app_dev.php/createOrder" target="_blank">
+    <input type="hidden" name="order[productId]" value="idealnapupa" />
+
+    <div>
+        <label>Email:</label>
+        <input type="text" name="order[email]" value="a@a.pl" />
+    </div>
+
+    <div>
+        <label>Invoice:</label>
+        <input type="checkbox" name="order[invoiceRequested]" value="1" checked="checked" />
+    </div>
+
+    <div>
+        <label>Invoice title:</label>
+        <input type="text" name="order[invoiceTitle]" value="tit" />
+    </div>
+
+    <div>
+        <label>Invoice address:</label>
+        <input type="text" name="order[invoiceAddress]" value="add" />
+    </div>
+
+    <div>
+        <label>Invoice nip:</label>
+        <input type="text" name="order[invoiceNip]" value="nip" />
+    </div>
+
+    <input type="submit" value="submit" />
+</form>

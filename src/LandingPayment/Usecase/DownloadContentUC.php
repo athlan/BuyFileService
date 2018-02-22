@@ -5,8 +5,10 @@ namespace LandingPayment\Usecase;
 use InvalidArgumentException;
 use LandingPayment\Domain\Download;
 use LandingPayment\Domain\DownloadRepository;
+use LandingPayment\Domain\OrderNotExistsException;
 use LandingPayment\Domain\OrderRepository;
 use LandingPayment\Domain\Product;
+use LandingPayment\Domain\ProductNotExistsException;
 use LandingPayment\Domain\ProductRepository;
 
 class DownloadContentUC
@@ -47,13 +49,15 @@ class DownloadContentUC
     /**
      * @param $orderId
      * @param $ip
+     * @throws OrderNotExistsException
+     * @throws ProductNotExistsException
      * @return Product
      */
     public function doDownload($orderId, $ip) {
         $order = $this->orderRepository->getById($orderId);
 
         if ($order == null) {
-            throw new InvalidArgumentException();
+            throw new OrderNotExistsException($orderId);
         }
 
         $now = new \DateTimeImmutable();
@@ -63,6 +67,10 @@ class DownloadContentUC
 
         $productId = $order->getItem()->getProductId();
         $product = $this->productRepository->getById($productId);
+
+        if ($product === null) {
+            throw new ProductNotExistsException($productId);
+        }
 
         return $product;
     }

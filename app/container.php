@@ -1,26 +1,27 @@
 <?php
 
 use Silex\Application;
-use Silex\Provider\DoctrineServiceProvider;
-use Silex\Provider\TwigServiceProvider;
-use Silex\Provider\ServiceControllerServiceProvider;
-use Silex\Provider\HttpFragmentServiceProvider;
-use Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
 
 $app = new Application();
 
 require __DIR__ . '/config/params.php';
 
-$app->register(new ServiceControllerServiceProvider());
-$app->register(new HttpFragmentServiceProvider());
-$app->register(new TwigServiceProvider());
-$app->register(new HttpFragmentServiceProvider());
+$app->register(new Silex\Provider\ServiceControllerServiceProvider());
+$app->register(new Silex\Provider\HttpFragmentServiceProvider());
+$app->register(new Silex\Provider\TwigServiceProvider());
+$app->register(new Silex\Provider\HttpFragmentServiceProvider());
+$app->register(new Silex\Provider\FormServiceProvider());
+$app->register(new Silex\Provider\ValidatorServiceProvider());
+$app->register(new Silex\Provider\LocaleServiceProvider());
+$app->register(new Silex\Provider\TranslationServiceProvider(), array(
+    'translator.domains' => array(),
+));
 
 $app['twig'] = $app->extend('twig', function ($twig, $app) {
     return $twig;
 });
 
-$app->register(new DoctrineServiceProvider(), array(
+$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
         'driver'   => 'pdo_mysql',
         'dbname'   => $app['config.db.name'],
@@ -32,7 +33,7 @@ $app->register(new DoctrineServiceProvider(), array(
     ),
 ));
 
-$app->register(new DoctrineOrmServiceProvider(), array(
+$app->register(new Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
     'orm.proxies_dir' =>  __DIR__ . '/../var/cache/doctrine-proxy',
     'orm.em.options' => array(
         'mappings' => array(
@@ -44,6 +45,13 @@ $app->register(new DoctrineOrmServiceProvider(), array(
         ),
     ),
 ));
+
+$app['order.create.uc'] = function () use ($app) {
+    return new \LandingPayment\Usecase\CreateOrderUC(
+        $app['order.repository'],
+        $app['product.repository']
+    );
+};
 
 $app['download.uc'] = function () use ($app) {
     return new \LandingPayment\Usecase\DownloadContentUC(
@@ -86,6 +94,10 @@ $app['payment.gateway.payu.configuration'] = function () use ($app) {
     $config = new \LandingPayment\Delivery\PaymentGateway\PayU\Configuration($app);
     $config->initialize();
     return $config;
+};
+
+$app['order.create.form'] = function () use ($app) {
+    return new \LandingPayment\Delivery\Http\Dto\CreateOrderFormFactory($app['form.factory']);
 };
 
 return $app;

@@ -2,61 +2,68 @@
 
 namespace LandingPayment\Delivery\Http;
 
+use LandingPayment\Delivery\Http\Dto\CreateOrderDto;
+use LandingPayment\Delivery\Http\Dto\CreateOrderFormFactory;
+use LandingPayment\Delivery\Http\Response\FormErrorResponseBuilder;
 use LandingPayment\Delivery\PaymentGateway\OrderPaymentResponseFactory;
-use LandingPayment\Domain\Order;
-use LandingPayment\Domain\OrderInvoiceData;
-use LandingPayment\Domain\OrderItem;
-use LandingPayment\Domain\OrderRepository;
-use LandingPayment\Domain\ProductRepository;
+use LandingPayment\Domain\ProductNotExistsException;
+use LandingPayment\Usecase\CreateOrderCommand;
+use LandingPayment\Usecase\CreateOrderUC;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CreateOrderController {
 
     /**
-     * @var OrderRepository
+     * @var CreateOrderFormFactory
      */
-    private $orderRepository;
+    private $createOrderFormFactory;
 
     /**
-     * @var ProductRepository
+     * @var CreateOrderUC
      */
-    private $productRepository;
+    private $createOrderUC;
 
     /**
      * @var OrderPaymentResponseFactory
      */
     private $orderPaymentResponseFactory;
 
-    public function __construct(OrderRepository $orderRepository,
-                                ProductRepository $productRepository,
+    public function __construct(CreateOrderFormFactory $createOrderFormFactory,
+                                CreateOrderUC $createOrderUC,
                                 OrderPaymentResponseFactory $orderPaymentResponseFactory) {
-        $this->orderRepository = $orderRepository;
-        $this->productRepository = $productRepository;
+        $this->createOrderFormFactory = $createOrderFormFactory;
+        $this->createOrderUC = $createOrderUC;
         $this->orderPaymentResponseFactory = $orderPaymentResponseFactory;
     }
 
-    public function createOrder(Request $request, $productId) {
-        $product = $this->productRepository->getById($productId);
+    public function createOrder(Request $request) {
+        $form = $this->createOrderFormFactory->createForm();
 
-        if ($product == null) {
-            throw new NotFoundHttpException();
+        $form->handleRequest($request);
+
+        if(!$form->isValid()) {
+            return FormErrorResponseBuilder::createResponse($form);
         }
 
-        $now = new \DateTimeImmutable();
+        /* @var $formData CreateOrderDto */
+        $formData = $form->getData();
 
-        $order = Order::createNewOrder($now);
-        $order->addItem(OrderItem::newOrderItemFromProduct($product));
+        $command = new CreateOrderCommand();
+        $command->productId = $formData->productId;
+        $command->email = $formData->email;
+        $command->invoiceRequested = $formData->invoiceRequested;
+        $command->invoiceTitle = $formData->invoiceTitle;
+        $command->invoiceAddress = $formData->invoiceAddress;
+        $command->invoiceNip = $formData->invoiceNip;
+        $command->userIp = $request->getClientIp();
 
-        $orderData = $order->getOrderData();
-
-        $orderData->setCreationIp($request->getClientIp());
-        $orderData->setEmail('a@a.pl');
-
-        //$orderData->setInvoiceNotRequested();
-        $orderData->setInvoiceRequest(new OrderInvoiceData('title', 'address', 'nip'));
-
-        $this->orderRepository->save($order);
+        try {
+            $order = $this->createOrderUC->createOrder($command);
+        }
+        catch (ProductNotExistsException $e) {
+            throw new NotFoundHttpException(null, $e);
+        }
 
         return $this->orderPaymentResponseFactory->createPaymentResponse($order);
     }

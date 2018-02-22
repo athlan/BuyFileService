@@ -5,8 +5,8 @@ use LandingPayment\Delivery\Http\DownloadFileByOrderController;
 
 $app['order.create.controller'] = function() use ($app) {
     return new CreateOrderController(
-        $app['order.repository'],
-        $app['product.repository'],
+        $app['order.create.form'],
+        $app['order.create.uc'],
         $app['order.payment.httpresponse.factory']
     );
 };

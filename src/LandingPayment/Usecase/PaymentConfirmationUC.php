@@ -3,6 +3,7 @@
 namespace LandingPayment\Usecase;
 
 use InvalidArgumentException;
+use LandingPayment\Domain\OrderNotExistsException;
 use LandingPayment\Domain\OrderRepository;
 use LandingPayment\Domain\PaymentGatewayEvent;
 use LandingPayment\Domain\PaymentGatewayEventRepository;
@@ -29,6 +30,7 @@ class PaymentConfirmationUC
      * @param string $orderId
      * @param float $amount
      * @param string $currency
+     * @throws OrderNotExistsException
      * @return bool
      */
     public function markAsPaid($orderId, $amount, $currency) {
@@ -37,7 +39,7 @@ class PaymentConfirmationUC
         $order = $this->orderRepository->getById($orderId);
 
         if ($order == null) {
-            throw new InvalidArgumentException();
+            throw new OrderNotExistsException($orderId);
         }
 
         $orderItem = $order->getItem();
@@ -71,6 +73,6 @@ class PaymentConfirmationUC
             $data
         );
 
-        $order = $this->paymentGatewayEventRepository->save($event);
+        $this->paymentGatewayEventRepository->save($event);
     }
 }
