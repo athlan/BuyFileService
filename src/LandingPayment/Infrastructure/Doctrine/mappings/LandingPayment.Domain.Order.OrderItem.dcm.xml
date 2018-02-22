@@ -4,10 +4,10 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
-    <embeddable name="LandingPayment\Domain\OrderData">
-        <field name="creationIp" column="creation_ip" type="string" />
-        <field name="email" column="email" type="string" />
-        <field name="invoice" column="invoice_requested" type="boolean" />
-        <embedded name="invoiceData" class="LandingPayment\Domain\OrderInvoiceData" use-column-prefix="true" column-prefix="invoice_" />
+    <embeddable name="LandingPayment\Domain\Order\OrderItem">
+        <field name="productId" column="id" type="string" />
+        <field name="price" column="price" type="float" />
+        <field name="currency" column="currency" type="string" />
+        <field name="quantity" column="quantity" type="integer" />
     </embeddable>
 </doctrine-mapping>

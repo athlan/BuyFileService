@@ -2,8 +2,8 @@
 
 namespace LandingPayment\Infrastructure\Config;
 
-use LandingPayment\Domain\Product;
-use LandingPayment\Domain\ProductRepository;
+use LandingPayment\Domain\Product\Product;
+use LandingPayment\Domain\Product\ProductRepository;
 
 class ProductRepositoryConfig implements ProductRepository
 {

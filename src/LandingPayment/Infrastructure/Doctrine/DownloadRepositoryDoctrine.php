@@ -3,8 +3,8 @@
 namespace LandingPayment\Infrastructure\Doctrine;
 
 use Doctrine\ORM\EntityManager;
-use LandingPayment\Domain\Download;
-use LandingPayment\Domain\DownloadRepository;
+use LandingPayment\Domain\Download\Download;
+use LandingPayment\Domain\Download\DownloadRepository;
 
 class DownloadRepositoryDoctrine implements DownloadRepository {
 

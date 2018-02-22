@@ -3,13 +3,13 @@
 namespace LandingPayment\Usecase;
 
 use InvalidArgumentException;
-use LandingPayment\Domain\Download;
-use LandingPayment\Domain\DownloadRepository;
-use LandingPayment\Domain\OrderNotExistsException;
-use LandingPayment\Domain\OrderRepository;
-use LandingPayment\Domain\Product;
-use LandingPayment\Domain\ProductNotExistsException;
-use LandingPayment\Domain\ProductRepository;
+use LandingPayment\Domain\Download\Download;
+use LandingPayment\Domain\Download\DownloadRepository;
+use LandingPayment\Domain\Order\OrderNotExistsException;
+use LandingPayment\Domain\Order\OrderRepository;
+use LandingPayment\Domain\Product\Product;
+use LandingPayment\Domain\Product\ProductNotExistsException;
+use LandingPayment\Domain\Product\ProductRepository;
 
 class DownloadContentUC
 {

@@ -2,8 +2,8 @@
 
 namespace LandingPayment\Delivery\PaymentGateway;
 
-use LandingPayment\Domain\Order;
-use LandingPayment\Domain\Product;
+use LandingPayment\Domain\Order\Order;
+use LandingPayment\Domain\Product\Product;
 
 class ReturnUrlFactory
 {

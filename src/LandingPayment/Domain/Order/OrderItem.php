@@ -1,9 +1,8 @@
 <?php
 
-namespace LandingPayment\Domain;
+namespace LandingPayment\Domain\Order;
 
-use DateTimeImmutable;
-use Ramsey\Uuid\Uuid;
+use LandingPayment\Domain\Product\Product;
 
 class OrderItem {
 

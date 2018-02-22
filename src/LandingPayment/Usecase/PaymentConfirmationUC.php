@@ -3,10 +3,10 @@
 namespace LandingPayment\Usecase;
 
 use InvalidArgumentException;
-use LandingPayment\Domain\OrderNotExistsException;
-use LandingPayment\Domain\OrderRepository;
-use LandingPayment\Domain\PaymentGatewayEvent;
-use LandingPayment\Domain\PaymentGatewayEventRepository;
+use LandingPayment\Domain\Order\OrderNotExistsException;
+use LandingPayment\Domain\Order\OrderRepository;
+use LandingPayment\Domain\Payment\PaymentGatewayEvent;
+use LandingPayment\Domain\Payment\PaymentGatewayEventRepository;
 
 class PaymentConfirmationUC
 {

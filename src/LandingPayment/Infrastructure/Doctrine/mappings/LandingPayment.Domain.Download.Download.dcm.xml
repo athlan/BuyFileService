@@ -4,12 +4,12 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
-    <entity name="LandingPayment\Domain\Download" table="downloads">
+    <entity name="LandingPayment\Domain\Download\Download" table="downloads">
         <id name="order" association-key="true" />
         <field name="downloadDate" column="download_date" type="datetime" />
         <field name="ip" column="ip" type="string" />
 
-        <many-to-one target-entity="LandingPayment\Domain\Order" field="order">
+        <many-to-one target-entity="LandingPayment\Domain\Order\Order" field="order">
             <join-column name="order_id" referenced-column-name="id" />
         </many-to-one>
     </entity>

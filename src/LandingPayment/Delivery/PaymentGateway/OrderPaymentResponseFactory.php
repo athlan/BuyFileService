@@ -2,7 +2,7 @@
 
 namespace LandingPayment\Delivery\PaymentGateway;
 
-use LandingPayment\Domain\Order;
+use LandingPayment\Domain\Order\Order;
 use Symfony\Component\HttpFoundation\Response;
 
 interface OrderPaymentResponseFactory

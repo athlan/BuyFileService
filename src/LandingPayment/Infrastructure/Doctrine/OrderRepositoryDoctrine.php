@@ -3,8 +3,8 @@
 namespace LandingPayment\Infrastructure\Doctrine;
 
 use Doctrine\ORM\EntityManager;
-use LandingPayment\Domain\Order;
-use LandingPayment\Domain\OrderRepository;
+use LandingPayment\Domain\Order\Order;
+use LandingPayment\Domain\Order\OrderRepository;
 
 class OrderRepositoryDoctrine implements OrderRepository {
 

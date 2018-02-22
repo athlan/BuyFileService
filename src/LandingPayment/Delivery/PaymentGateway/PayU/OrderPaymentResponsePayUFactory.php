@@ -3,11 +3,11 @@
 namespace LandingPayment\Delivery\PaymentGateway\PayU;
 
 use LandingPayment\Delivery\PaymentGateway\ReturnUrlFactory;
-use LandingPayment\Domain\ProductRepository;
+use LandingPayment\Domain\Product\ProductRepository;
 use OpenPayU_Configuration;
 use OpenPayU_Order;
 use LandingPayment\Delivery\PaymentGateway\OrderPaymentResponseFactory;
-use LandingPayment\Domain\Order;
+use LandingPayment\Domain\Order\Order;
 use Silex\Application;
 use Silex\Application\UrlGeneratorTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;

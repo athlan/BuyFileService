@@ -1,7 +1,8 @@
 <?php
 
-namespace LandingPayment\Domain;
+namespace LandingPayment\Domain\Payment;
 
+use DateTimeImmutable;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -23,7 +24,7 @@ class PaymentGatewayEvent
     private $eventName;
 
     /**
-     * @var \DateTimeImmutable
+     * @var DateTimeImmutable
      */
     private $date;
 
@@ -36,10 +37,10 @@ class PaymentGatewayEvent
      * PaymentGatewayEvent constructor.
      * @param string $gatewayId
      * @param string $eventName
-     * @param \DateTimeImmutable $date
+     * @param DateTimeImmutable $date
      * @param array $data
      */
-    public function __construct($gatewayId, $eventName, \DateTimeImmutable $date, array $data)
+    public function __construct($gatewayId, $eventName, DateTimeImmutable $date, array $data)
     {
         $this->eventId = Uuid::uuid4();
         $this->gatewayId = $gatewayId;

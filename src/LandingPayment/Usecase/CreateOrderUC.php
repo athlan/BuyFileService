@@ -2,12 +2,12 @@
 
 namespace LandingPayment\Usecase;
 
-use LandingPayment\Domain\Order;
-use LandingPayment\Domain\OrderInvoiceData;
-use LandingPayment\Domain\OrderItem;
-use LandingPayment\Domain\OrderRepository;
-use LandingPayment\Domain\ProductNotExistsException;
-use LandingPayment\Domain\ProductRepository;
+use LandingPayment\Domain\Order\Order;
+use LandingPayment\Domain\Order\OrderInvoiceData;
+use LandingPayment\Domain\Order\OrderItem;
+use LandingPayment\Domain\Order\OrderRepository;
+use LandingPayment\Domain\Product\ProductNotExistsException;
+use LandingPayment\Domain\Product\ProductRepository;
 
 class CreateOrderUC
 {

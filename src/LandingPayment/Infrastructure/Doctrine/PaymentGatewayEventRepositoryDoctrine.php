@@ -3,8 +3,8 @@
 namespace LandingPayment\Infrastructure\Doctrine;
 
 use Doctrine\ORM\EntityManager;
-use LandingPayment\Domain\PaymentGatewayEvent;
-use LandingPayment\Domain\PaymentGatewayEventRepository;
+use LandingPayment\Domain\Payment\PaymentGatewayEvent;
+use LandingPayment\Domain\Payment\PaymentGatewayEventRepository;
 
 class PaymentGatewayEventRepositoryDoctrine implements PaymentGatewayEventRepository {
 

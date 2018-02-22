@@ -6,7 +6,7 @@ use LandingPayment\Delivery\Http\Dto\CreateOrderDto;
 use LandingPayment\Delivery\Http\Dto\CreateOrderFormFactory;
 use LandingPayment\Delivery\Http\Response\FormErrorResponseBuilder;
 use LandingPayment\Delivery\PaymentGateway\OrderPaymentResponseFactory;
-use LandingPayment\Domain\ProductNotExistsException;
+use LandingPayment\Domain\Product\ProductNotExistsException;
 use LandingPayment\Usecase\CreateOrderCommand;
 use LandingPayment\Usecase\CreateOrderUC;
 use Symfony\Component\HttpFoundation\Request;

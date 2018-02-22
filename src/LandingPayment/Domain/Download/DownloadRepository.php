@@ -1,6 +1,6 @@
 <?php
 
-namespace LandingPayment\Domain;
+namespace LandingPayment\Domain\Download;
 
 interface DownloadRepository {
 
