@@ -4,16 +4,17 @@ $app['app.url'] = 'http://some.service';
 
 $app['config.db.host'] = 'localhost';
 $app['config.db.port'] = '3306';
-$app['config.db.name'] = 'idealnapupa';
-$app['config.db.user'] = 'root';
+$app['config.db.name'] = '';
+$app['config.db.user'] = '';
 $app['config.db.password'] = '';
 
 $app['product.repository.data'] = [
     'idealnapupa' => [
-        'title' => 'Idealnapupa Ebook',
+        'title' => 'Some Ebook',
         'price' => 27.00,
         'currency' => 'PLN',
         'metadata' => [
+            'payment.return.url' => 'https://some.site.com/thankyou.html?orderId={orderId}',
             'filestream.path' => __DIR__ . '/../../web/file.txt',
         ],
     ],
