@@ -7,3 +7,7 @@
 !/var/logs/.gitkeep
 
 /app/config/params.php
+
+# templates
+/templates/product/*
+!/templates/product/sample

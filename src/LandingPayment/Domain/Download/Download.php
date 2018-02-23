@@ -3,6 +3,7 @@
 namespace LandingPayment\Domain\Download;
 
 use DateTimeImmutable;
+use LandingPayment\Domain\Order\Order;
 
 class Download {
 

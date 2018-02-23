@@ -16,6 +16,20 @@ $app['product.repository.data'] = [
         'metadata' => [
             'payment.return.url' => 'https://some.site.com/thankyou.html?orderId={orderId}',
             'filestream.path' => __DIR__ . '/../../web/file.txt',
+
+            'mail' => [
+                'order-paid' => [
+                    'subject' => 'Some title',
+                ],
+            ],
+            'mailer' => [
+                'from' => '',
+                'from_name' => '',
+                'host' => '',
+                'port' => 25,
+                'username' => '',
+                'password' => '',
+            ],
         ],
     ],
 ];
