@@ -48,10 +48,6 @@ $app->register(new Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), ar
     ),
 ));
 
-$app['eventbus'] = function () use ($app) {
-    return new \Symfony\Component\EventDispatcher\EventDispatcher();
-};
-
 // usecases
 
 $app['order.create.uc'] = function () use ($app) {
@@ -71,7 +67,7 @@ $app['download.uc'] = function () use ($app) {
 
 $app['payment.confirmation.uc'] = function () use ($app) {
     return new \LandingPayment\Usecase\PaymentConfirmationUC(
-        $app['eventbus'],
+        $app['event_dispatcher'],
         $app['order.repository'],
         $app['paymentGatewayEvent.repository']
     );
@@ -124,5 +120,16 @@ $app['payment.gateway.payu.configuration'] = function () use ($app) {
 $app['order.create.form'] = function () use ($app) {
     return new \LandingPayment\Delivery\Http\Dto\CreateOrderFormFactory($app['form.factory']);
 };
+
+// events
+$app['event_dispatcher'] = function () use ($app) {
+    $dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
+    return new \PimpleAwareEventDispatcher\PimpleAwareEventDispatcher($dispatcher, $app);
+};
+
+$app['event_dispatcher']->addListenerService(
+    \LandingPayment\Domain\Order\OrderPaidEvent::NAME,
+    array("payment.confirmation.eventhandler.orderpaid", "onOrderPaid")
+);
 
 return $app;
