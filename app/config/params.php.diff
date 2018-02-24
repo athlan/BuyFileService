@@ -15,7 +15,7 @@ $app['product.repository.data'] = [
         'currency' => 'PLN',
         'metadata' => [
             'payment.return.url' => 'https://some.site.com/thankyou.html?orderId={orderId}',
-            'filestream.path' => __DIR__ . '/../../web/file.txt',
+            'filestream.path' => __DIR__ . '/../../files/file.txt',
 
             'mail' => [
                 'order-paid' => [

@@ -11,3 +11,7 @@
 # templates
 /templates/product/*
 !/templates/product/sample
+
+# files
+/files/*
+!/files/.gitkeep
