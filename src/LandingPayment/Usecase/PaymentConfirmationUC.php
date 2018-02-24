@@ -4,12 +4,19 @@ namespace LandingPayment\Usecase;
 
 use InvalidArgumentException;
 use LandingPayment\Domain\Order\OrderNotExistsException;
+use LandingPayment\Domain\Order\OrderPaidEvent;
 use LandingPayment\Domain\Order\OrderRepository;
 use LandingPayment\Domain\Payment\PaymentGatewayEvent;
 use LandingPayment\Domain\Payment\PaymentGatewayEventRepository;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class PaymentConfirmationUC
 {
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
     /**
      * @var OrderRepository
      */
@@ -20,8 +27,10 @@ class PaymentConfirmationUC
      */
     private $paymentGatewayEventRepository;
 
-    public function __construct(OrderRepository $orderRepository,
+    public function __construct(EventDispatcherInterface $eventDispatcher,
+                                OrderRepository $orderRepository,
                                 PaymentGatewayEventRepository $paymentGatewayEventRepository) {
+        $this->eventDispatcher = $eventDispatcher;
         $this->orderRepository = $orderRepository;
         $this->paymentGatewayEventRepository = $paymentGatewayEventRepository;
     }
@@ -54,6 +63,9 @@ class PaymentConfirmationUC
         $order->markAsPaid($now);
 
         $this->orderRepository->save($order);
+
+        $event = new OrderPaidEvent($order);
+        $this->eventDispatcher->dispatch($event->getName(), $event);
 
         return true;
     }
