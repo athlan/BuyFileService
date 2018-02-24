@@ -23,6 +23,10 @@ $app['twig'] = $app->extend('twig', function ($twig, $app) {
     return $twig;
 });
 
+$app['event_dispatcher'] = function () use ($app) {
+    return new \Symfony\Component\EventDispatcher\EventDispatcher();
+};
+
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
         'driver'   => 'pdo_mysql',
@@ -122,14 +126,11 @@ $app['order.create.form'] = function () use ($app) {
 };
 
 // events
-$app['event_dispatcher'] = function () use ($app) {
-    $dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
-    return new \PimpleAwareEventDispatcher\PimpleAwareEventDispatcher($dispatcher, $app);
-};
-
-$app['event_dispatcher']->addListenerService(
+$app['event_dispatcher']->addListener(
     \LandingPayment\Domain\Order\OrderPaidEvent::NAME,
-    array("payment.confirmation.eventhandler.orderpaid", "onOrderPaid")
+    function ($event) use ($app) {
+        $app['payment.confirmation.eventhandler.orderpaid']->onOrderPaid($event);
+    }
 );
 
 return $app;
