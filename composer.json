@@ -19,10 +19,19 @@
         "symfony/config": "~2.8|^3.0",
         "symfony/validator": "~2.8|^3.0",
         "dflydev/doctrine-orm-service-provider": "^2.0",
+        "davedevelopment/pimple-aware-event-dispatcher": "dev-master",
         "ramsey/uuid": "^3.7",
         "openpayu/openpayu": "^2.2",
 
         "symfony/twig-bridge": "~2.8|^3.0",
         "swiftmailer/swiftmailer": "^5.4"
-    }
+    },
+
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/athlan/pimple-aware-event-dispatcher"
+        }
+    ]
 }

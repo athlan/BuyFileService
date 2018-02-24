@@ -4,9 +4,53 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "94c579e85b29dab8011492a299455cab",
-    "content-hash": "b7c014d363adc1cf19f0adbcbacc0f3c",
+    "hash": "d6792fa1fa7c81feefa8fa912a2c5e5f",
+    "content-hash": "8c65fd6bf188814407938492dd3f8ed1",
     "packages": [
+        {
+            "name": "davedevelopment/pimple-aware-event-dispatcher",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/athlan/pimple-aware-event-dispatcher.git",
+                "reference": "7d4678c8066ae6631fa26f19d47ee50ec84d88ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/athlan/pimple-aware-event-dispatcher/zipball/7d4678c8066ae6631fa26f19d47ee50ec84d88ac",
+                "reference": "7d4678c8066ae6631fa26f19d47ee50ec84d88ac",
+                "shasum": ""
+            },
+            "require": {
+                "pimple/pimple": "3.*",
+                "symfony/event-dispatcher": "~2.1|^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "PimpleAwareEventDispatcher": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Dave Marshall",
+                    "email": "dave.marshall@atstsolutions.co.uk"
+                }
+            ],
+            "description": "A Symfony compatible event dispatcher that allows services to be lazy loaded from an instance of the Pimple DI container",
+            "support": {
+                "source": "https://github.com/athlan/pimple-aware-event-dispatcher/tree/master"
+            },
+            "time": "2018-02-24 15:09:36"
+        },
         {
             "name": "dflydev/doctrine-orm-service-provider",
             "version": "v2.0.1",
@@ -2852,8 +2896,10 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "davedevelopment/pimple-aware-event-dispatcher": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
